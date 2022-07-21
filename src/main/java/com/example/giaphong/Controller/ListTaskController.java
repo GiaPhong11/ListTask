@@ -30,13 +30,13 @@ public class ListTaskController {
             @RequestParam("size") Optional<Integer> size){
 
         //Giá trị ngầm định là 1 khi không nhập
-        int currentPage = page.orElse(1);
+        int currentPage = page.orElse(0);
         //5 giá trị trên 1 trnag
         int pageSize = size.orElse(7);
 
 
-        //Thực hiện sắp xếp theo title
-        Pageable pageable = PageRequest.of(currentPage,pageSize, Sort.by("title"));
+        //Thực hiện sắp xếp theo status
+        Pageable pageable = PageRequest.of(currentPage,pageSize, Sort.by("status"));
 
         Page<TaskEntity> resultPage = null;
         resultPage =  taskService.findAll(pageable);
