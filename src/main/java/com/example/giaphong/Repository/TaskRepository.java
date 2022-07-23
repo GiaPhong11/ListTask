@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<TaskEntity,Integer> {
     @Query(value = " SELECT * FROM tbl_tasks LIMIT 5", nativeQuery = true)
-    public List<TaskEntity> findProduct();
+    public List<TaskEntity> find5task();
 }
