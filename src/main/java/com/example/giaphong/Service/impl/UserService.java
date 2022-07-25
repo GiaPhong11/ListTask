@@ -18,6 +18,13 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
 
     @Override
+    public UserEntity findByusername(String username) throws Exception{
+            return  userRepository.findByusername(username);
+
+
+    }
+
+    @Override
     public List<UserEntity> findAll() {
         return userRepository.findAll();
     }
@@ -45,6 +52,12 @@ public class UserService implements IUserService {
     @Override
     public void deleteAll() {
         userRepository.deleteAll();
+    }
+
+    @Override
+    public UserEntity loadUserByUserName(String username) {
+        UserEntity users = userRepository.findByusername(username);
+        return users;
     }
 
 }

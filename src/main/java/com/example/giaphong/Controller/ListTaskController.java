@@ -32,7 +32,7 @@ public class ListTaskController {
         //Giá trị ngầm định là 1 khi không nhập
         int currentPage = page.orElse(0);
         //5 giá trị trên 1 trnag
-        int pageSize = size.orElse(7);
+        int pageSize = size.orElse(5);
 
 
         //Thực hiện sắp xếp theo status
@@ -48,16 +48,14 @@ public class ListTaskController {
             int start = Math.max(1, currentPage -2 );
             int end = Math.min(currentPage + 2, totalPages);
 
-            if(totalPages > 5) {
-                if(end == totalPages) start = end -5;
-                else if(start == 1 ) end = start + 5;
+            if (totalPages > 0) {
+                List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                        .boxed()
+                        .collect(Collectors.toList());
+                model.addAttribute("pageNumbers", pageNumbers);
             }
 
-            //Chuyển khoảng từ start tới end thành danh sách
-            List<Integer> pageNumbers = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
-
             //Tính số trang hiển thị trên view
-            model.addAttribute("pageNumbers", pageNumbers);
             model.addAttribute("pages", resultPage.getContent());
             model.addAttribute("number", resultPage.getNumber());
             model.addAttribute("totalElements", resultPage.getTotalElements());

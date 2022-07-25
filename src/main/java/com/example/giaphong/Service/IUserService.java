@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface IUserService {
 
 
+    UserEntity findByusername(String username) throws Exception;
+
     abstract List<UserEntity> findAll();
 
     abstract <S extends UserEntity> List<S> saveAll(Iterable<S> entities);
@@ -23,4 +25,5 @@ public interface IUserService {
 
     abstract void deleteAll();
 
+    UserEntity loadUserByUserName(String username);
 }

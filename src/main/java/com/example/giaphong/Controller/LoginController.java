@@ -4,13 +4,14 @@ import com.example.giaphong.DTO.SimpleUser;
 import com.example.giaphong.Entities.UserEntity;
 import com.example.giaphong.Service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 public class LoginController {
@@ -20,30 +21,63 @@ public class LoginController {
 
 
 
-    @GetMapping("")
+    @GetMapping("/login")
     public String Home(){
         return "login";
     }
+    @RequestMapping(value = { "/register" }, method = RequestMethod.GET) // -> action
+    public String register(final Model model,
+                           final HttpServletRequest request,
+                           final HttpServletResponse response)
+            throws IOException {
 
-    @PostMapping("/save-login")
-    public String saveLogin(Model model,
-                            HttpServletRequest request,
-                            HttpServletResponse response){
+        model.addAttribute("regis", new UserEntity());
 
-        //1: Lấy thông tin người dùng đẩy lên
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
-
-        return "login";
+        return "register"; // -> duong dan toi VIEW.
     }
 
-    @GetMapping("/register")
-    public String Register(Model model){
-        model.addAttribute("user", new SimpleUser());
-        return "register";
+    @RequestMapping(value = { "/register" }, method = RequestMethod.POST) // -> action
+    public String saveContact(final Model model,
+                              final HttpServletRequest request,
+                              final HttpServletResponse response,
+                              final @ModelAttribute("regis") UserEntity regis)
+            throws Exception {
+        //b1: lay thong tin nguoi dung day len
+        //	String email = request.getParameter("txtEmail");
+        //	String emailFromSpringForm = contact.getTxtEmail();
+        String username = regis.getUsername();
+        String password = regis.getPassword();
+        String cfPassword = request.getParameter("repassword");
+        if(password.compareTo(cfPassword) != 0) {
+            model.addAttribute("loi","Mật khẩu và xác thực mật khẩu khác nhau");
+            return "register";
+        }
+//		String email = regis.getEmail();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(regis.getPassword());
+        regis.setPassword(encodedPassword);
+            regis.setUsername(username);
+        //@SuppressWarnings("unchecked")
+//        UserEntity user = new UserEntity();
+
+        UserEntity    user = userService.findByusername(username);
+//        }catch (Exception e){
+//            model.addAttribute("loi","Tài khoản đã tồn tại");
+//        }
+
+        if(user == null) {
+            userService.save(regis);
+            //b3: thong bao cho nguoi dung biet da luu thanh cong
+            model.addAttribute("thongbao", "Đăng ký thành công");
+
+        }else {
+            model.addAttribute("loi","Tài khoản đã tồn tại");
+        }
+        //TODO b2: luu thong tin vao csdl
+
+
+        //return "WEB-INF/views/user/home.jsp";
+        return "register"; // -> duong dan toi VIEW.
     }
 
     @PostMapping("/process_register")
