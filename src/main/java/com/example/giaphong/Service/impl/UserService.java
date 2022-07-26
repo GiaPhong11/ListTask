@@ -18,10 +18,8 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
 
     @Override
-    public UserEntity findByusername(String username) throws Exception{
-            return  userRepository.findByusername(username);
-
-
+    public UserEntity findByusername(String username) throws Exception {
+        return userRepository.findByusername(username);
     }
 
     @Override
@@ -29,10 +27,6 @@ public class UserService implements IUserService {
         return userRepository.findAll();
     }
 
-    @Override
-    public <S extends UserEntity> List<S> saveAll(Iterable<S> entities) {
-        return userRepository.saveAll(entities);
-    }
 
     @Override
     public Page<UserEntity> findAll(Pageable pageable) {
@@ -42,11 +36,6 @@ public class UserService implements IUserService {
     @Override
     public <S extends UserEntity> S save(S entity) {
         return userRepository.save(entity);
-    }
-
-    @Override
-    public Optional<UserEntity> findById(Integer integer) {
-        return userRepository.findById(integer);
     }
 
     @Override

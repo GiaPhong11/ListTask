@@ -32,35 +32,12 @@ public class TaskService implements ITaskService {
         return taskrepo.findAllById(integers);
     }
 
-    @Override
-    public <S extends TaskEntity> List<S> saveAll(Iterable<S> entities) {
-        return taskrepo.saveAll(entities);
-    }
-
-    @Override
-    public <S extends TaskEntity> S saveAndFlush(S entity) {
-        return taskrepo.saveAndFlush(entity);
-    }
-
-    @Override
-    public <S extends TaskEntity> List<S> findAll(Example<S> example) {
-        return taskrepo.findAll(example);
-    }
 
     @Override
     public <S extends TaskEntity> S save(S entity) {
         return taskrepo.save(entity);
     }
 
-    @Override
-    public Optional<TaskEntity> findById(Integer integer) {
-        return taskrepo.findById(integer);
-    }
-
-    @Override
-    public <S extends TaskEntity> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return taskrepo.findAll(example, pageable);
-    }
 
     @Override
     public void deleteById(Integer integer) {
@@ -72,8 +49,4 @@ public class TaskService implements ITaskService {
         taskrepo.delete(entity);
     }
 
-    @Override
-    public <S extends TaskEntity> Optional<S> findOne(Example<S> example) {
-        return taskrepo.findOne(example);
-    }
 }

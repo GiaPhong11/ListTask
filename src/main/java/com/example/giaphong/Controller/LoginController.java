@@ -20,12 +20,12 @@ public class LoginController {
     private UserService userService;
 
 
-
     @GetMapping("/login")
-    public String Home(){
+    public String Home() {
         return "login";
     }
-    @RequestMapping(value = { "/register" }, method = RequestMethod.GET) // -> action
+
+    @RequestMapping(value = {"/register"}, method = RequestMethod.GET) // -> action
     public String register(final Model model,
                            final HttpServletRequest request,
                            final HttpServletResponse response)
@@ -36,7 +36,7 @@ public class LoginController {
         return "register"; // -> duong dan toi VIEW.
     }
 
-    @RequestMapping(value = { "/register" }, method = RequestMethod.POST) // -> action
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST) // -> action
     public String saveContact(final Model model,
                               final HttpServletRequest request,
                               final HttpServletResponse response,
@@ -48,30 +48,30 @@ public class LoginController {
         String username = regis.getUsername();
         String password = regis.getPassword();
         String cfPassword = request.getParameter("repassword");
-        if(password.compareTo(cfPassword) != 0) {
-            model.addAttribute("loi","Mật khẩu và xác thực mật khẩu khác nhau");
+        if (password.compareTo(cfPassword) != 0) {
+            model.addAttribute("loi", "Mật khẩu và xác thực mật khẩu khác nhau");
             return "register";
         }
 //		String email = regis.getEmail();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(regis.getPassword());
         regis.setPassword(encodedPassword);
-            regis.setUsername(username);
+        regis.setUsername(username);
         //@SuppressWarnings("unchecked")
 //        UserEntity user = new UserEntity();
 
-        UserEntity    user = userService.findByusername(username);
+        UserEntity user = userService.findByusername(username);
 //        }catch (Exception e){
 //            model.addAttribute("loi","Tài khoản đã tồn tại");
 //        }
 
-        if(user == null) {
+        if (user == null) {
             userService.save(regis);
             //b3: thong bao cho nguoi dung biet da luu thanh cong
             model.addAttribute("thongbao", "Đăng ký thành công");
 
-        }else {
-            model.addAttribute("loi","Tài khoản đã tồn tại");
+        } else {
+            model.addAttribute("loi", "Tài khoản đã tồn tại");
         }
         //TODO b2: luu thong tin vao csdl
 
@@ -80,9 +80,9 @@ public class LoginController {
         return "register"; // -> duong dan toi VIEW.
     }
 
-    @PostMapping("/process_register")
+/*    @PostMapping("/process_register")
     public String processRegister(UserEntity user){
         userService.save(user);
         return "register_success";
-    }
+    }*/
 }
