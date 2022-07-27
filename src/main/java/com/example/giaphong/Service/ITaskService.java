@@ -17,6 +17,8 @@ public interface ITaskService {
 
     List<TaskEntity> findAllById(Iterable<Integer> integers);
 
+    TaskEntity findById(int id);
+
     <S extends TaskEntity> S save(S entity);
 
     void deleteById(Integer integer);
