@@ -56,9 +56,10 @@ public class ListTaskController {
             model.addAttribute("number", resultPage.getNumber());
             model.addAttribute("totalElements", resultPage.getTotalElements());
         }
-
+        List<TaskEntity> alltask = taskService.findAll();
         //Đẩy xuống tầng view
         model.addAttribute("taskPage", resultPage);
+        model.addAttribute("alltask",alltask);
         return "ListTask";
     }
 
@@ -67,7 +68,7 @@ public class ListTaskController {
         TaskEntity task = new TaskEntity();
         task.setTitle(request.getParameter("title").trim());
         task.setContent(request.getParameter("content").trim());
-        task.setStatus(request.getParameter("status").trim());
+        task.setStatus(1);
         taskService.save(task);
         return "redirect:/index";
     }
@@ -76,6 +77,16 @@ public class ListTaskController {
     public String delete(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         taskService.deleteById(id);
+        return "redirect:/index";
+    }
+
+    @PostMapping(value = "/update")
+    public String update(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        TaskEntity task = taskService.findById(id);
+        task.setTitle(request.getParameter("title").trim());
+        task.setContent(request.getParameter("content").trim());
+        taskService.save(task);
         return "redirect:/index";
     }
 

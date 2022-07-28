@@ -22,7 +22,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String Home() {
-        return "login";
+        return "SingIn";
     }
 
     @RequestMapping(value = {"/register"}, method = RequestMethod.GET) // -> action
@@ -33,7 +33,7 @@ public class LoginController {
 
         model.addAttribute("regis", new UserEntity());
 
-        return "register"; // -> duong dan toi VIEW.
+        return "SingUp"; // -> duong dan toi VIEW.
     }
 
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST) // -> action
@@ -50,7 +50,7 @@ public class LoginController {
         String cfPassword = request.getParameter("repassword");
         if (password.compareTo(cfPassword) != 0) {
             model.addAttribute("loi", "Mật khẩu và xác thực mật khẩu khác nhau");
-            return "register";
+            return "SingUp";
         }
 //		String email = regis.getEmail();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -77,7 +77,7 @@ public class LoginController {
 
 
         //return "WEB-INF/views/user/home.jsp";
-        return "register"; // -> duong dan toi VIEW.
+        return "SingUp"; // -> duong dan toi VIEW.
     }
 
 /*    @PostMapping("/process_register")

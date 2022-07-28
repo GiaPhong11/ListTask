@@ -16,7 +16,7 @@ public class LiskTaskRestController {
     @Autowired
     private TaskService taskService;
 
-    @GetMapping(value = "find/{id}")
+    @GetMapping(value = "api/find/{id}")
     public ResponseEntity<TaskEntity> find(@PathVariable("id") int id){
         try{
             return new ResponseEntity<TaskEntity>(taskService.findById(id), HttpStatus.OK);

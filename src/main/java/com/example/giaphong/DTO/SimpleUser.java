@@ -11,6 +11,7 @@ public class SimpleUser {
     @NotEmpty(message = "Địa chỉ không được bỏ trống")
     private String address;
 
+    @Size(min = 10, max = 10, message = "Phone number must have 10 numbers!")
     @Pattern(regexp = "^0\\d{9}$", message = "Nhập đúng định dạng của số điện thoại")
     private String phoneNumber;
 

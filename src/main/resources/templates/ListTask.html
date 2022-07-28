@@ -10,73 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
           integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
-
-
-    <style type="text/css">
-        .taskbar {
-            display: flex;
-            border-bottom: 1px solid rgba(0, 0, 0, .125);
-            padding-top: 20px;
-            padding-bottom: 20px;
-            margin-left: 30px;
-            width: 95%;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        .btn-add {
-            margin-left: 15px;
-        }
-
-        .flex {
-            display: flex;
-        }
-
-        .drop {
-            margin-left: 15px;
-        }
-
-        td, th {
-            text-align: center;
-        }
-
-        td {
-            border-right: 1px solid rgba(0, 0, 0, .125);
-            border-left: 1px solid rgba(0, 0, 0, .125);
-        }
-        .modal .modal-dialog {
-            max-width: 400px;
-        }
-        .modal .modal-header, .modal .modal-body, .modal .modal-footer {
-            padding: 20px 30px;
-        }
-        .modal .modal-content {
-            border-radius: 3px;
-            font-size: 14px;
-        }
-        .modal .modal-footer {
-            background: #ecf0f1;
-            border-radius: 0 0 3px 3px;
-        }
-        .modal .modal-title {
-            display: inline-block;
-        }
-        .modal .form-control {
-            border-radius: 2px;
-            box-shadow: none;
-            border-color: #dddddd;
-        }
-        .modal textarea.form-control {
-            resize: vertical;
-        }
-        .modal .btn {
-            border-radius: 2px;
-            min-width: 100px;
-        }
-        .modal form label {
-            font-weight: normal;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <main class="container">
@@ -140,12 +74,13 @@
                         <tr th:each=" list : ${taskPage.content} ">
                             <td scope="row" th:text="${list.id}"></td>
                             <td scope="row" th:text="${list.title}"></td>
-                            <td th:text="${list.status}"></td>
+                            <td th:text="${list.status==1?'Open':list.status==2?'Inprogress':'Done'}"
+                                th:class="${list.status==1?'Open':list.status==2?'Inprogress':'Done'}"></td>
                             <td>
                                 <a class="btn btn-outline-info" href=""><!--<i class="fa-solid fa-circle-info"></i>-->
                                     Chi tiết</a>
-                                <a href="#editEmployeeModal" class="btn btn-outline-warning" data-toggle="modal">Chỉnh sửa</a>
-                                <a href="#deleteEmployeeModal" class="delete btn btn-outline-danger" data-toggle="modal">Xóa</a>
+                                <a href="#editEmployeeModal" class="editTask btn btn-outline-warning" data-toggle="modal">Chỉnh sửa</a>
+                                <a href="#deleteEmployeeModal" th:onclick="titleDelete([[${list.id}]],[[${list.title}]])" class="delete btn btn-outline-danger" data-toggle="modal">Xóa</a>
                                 <input type="hidden" id="id" th:value="${list.id}">
                                 <input type="hidden" id="id2" th:value="${list.title}">
                             </td>
@@ -215,10 +150,10 @@
                         <label>Nội dung</label>
                         <input type="text" class="form-control" required name="content" >
                     </div>
-                    <div class="form-group">
+              <!--      <div class="form-group">
                         <label>Trạng thái</label>
                         <input type="text" class="form-control" required name="status" >
-                    </div>
+                    </div>-->
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy bỏ">
@@ -232,28 +167,29 @@
 <div id="editEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form th:action="@{/update/}" method="POST">
                 <div class="modal-header">
-                    <h4 class="modal-title">Chỉnh sửa Task</h4>
+                    <a th:href="@{/update/}" class="modal-title">Chỉnh sửa Task</a>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Tiêu đề</label>
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control" id="title" name="title" required>
                     </div>
                     <div class="form-group">
                         <label>Nội dung</label>
-                        <input type="email" class="form-control" required>
+                        <input type="text" class="form-control" id="text" name="text" required>
                     </div>
                     <div class="form-group">
                         <label>Trạng thái</label>
-                        <textarea class="form-control" required></textarea>
+                        <textarea class="form-control" id="status" name="status" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy bỏ">
                     <input type="submit" class="btn btn-info" value="Lưu">
+                    <input type="hidden" id="id" name="id">
                 </div>
             </form>
         </div>
@@ -269,7 +205,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <p >Bạn có chắc muốn xóa </p>
+                    <p >Bạn có chắc muốn xóa <span class="titleDelete"></span></p>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -280,6 +216,7 @@
         </div>
     </div>
 </div>
+
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>-->
@@ -304,10 +241,27 @@
         $('table .delete').on('click',function (){
             var id = $(this).parent().find('#id').val();
             $('#deleteEmployeeModal #id').val(id);
-            var title = $(this).parent().find('#id2').val();
-            console.log()
+
+        });
+
+        $('table .editTask').on('click',function (){
+            var id = $(this).parent().find('#id').val();
+            $.ajax({
+                type: 'GET',
+                url: '/api/find/' + id,
+                success: function(task){
+                    $('#editEmployeeModal #title').val(task.title);
+                    $('#editEmployeeModal #content').val(task.content);
+                    $('#editEmployeeModal #status').val(task.status);
+                }
+            });
         });
     });
+
+    function titleDelete(id,title){
+        document.querySelector(".titleDelete").innerHTML = title;
+        console.log( document.querySelector(".titleDelete"));
+    }
 </script>
 
 </body>
