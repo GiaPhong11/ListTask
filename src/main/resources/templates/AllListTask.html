@@ -34,11 +34,11 @@
                     </div>
                     <div class="float-right flex">
                         <form th:action="@{/index}" method="get">
-                        <div class="search">
-                            <input type="text" name="keywork" placeholder="Từ khóa"/>
-                            <!-- Keyword lấy theo parameter  -->
-                            <button type="submit" class="btn btn-info">Tìm kiếm</button>
-                        </div>
+                            <div class="search">
+                                <input type="text" name="keywork" placeholder="Từ khóa"/>
+                                <!-- Keyword lấy theo parameter  -->
+                                <button type="submit" class="btn btn-info">Tìm kiếm</button>
+                            </div>
                         </form>
                         <div class="drop dropdown show float-right">
                             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -50,7 +50,7 @@
                                 <form th:action="@{/index}" method="get">
                                     <div class="search">
                                         <input type="hidden" name="keywork" th:value="Open" placeholder="Từ khóa"/>
-                                <button class="dropdown-item" type="submit" >Open</button>
+                                        <button class="dropdown-item" type="submit" >Open</button>
                                     </div>
                                 </form>
                                 <form th:action="@{/index}" method="get">
@@ -72,7 +72,6 @@
                                 </form>
                                 <form th:action="@{/index}" method="get">
                                     <div class="search">
-
                                         <button class="dropdown-item" type="submit" >Page</button>
                                     </div>
                                 </form>
@@ -83,14 +82,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row" th:if="${!taskPage.hasContent()}">
-                        <div class="col">
-                            <div class="alert alert-primary" role="alert">
-                                <strong>No Task Found</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table table-striped table-inverse" th:if="${taskPage.hasContent()}">
+
+                    <table class="table table-striped table-inverse">
                         <thead class="thead-inverse">
                         <tr>
                             <th width="5%">ID</th>
@@ -101,7 +94,7 @@
                         </thead>
                         <tbody>
 
-                        <tr th:each=" list : ${taskPage.content} ">
+                        <tr th:each=" list : ${alltask} ">
                             <td scope="row" th:text="${list.id}"></td>
                             <td scope="row" th:text="${list.title}"></td>
                             <td th:text="${list.status}"></td>
@@ -118,7 +111,7 @@
                     </table>
                 </div>
 
-                <div class="card-footer text-muted">
+             <!--   <div class="card-footer text-muted">
                     <form>
                         <div class="form-inline float-left">
                             <label for="size">Page Size: </label>
@@ -155,7 +148,7 @@
                             </li>
                         </ul>
                     </nav>
-                </div>
+                </div>-->
             </div>
 
         </div>
@@ -179,10 +172,10 @@
                         <label>Nội dung</label>
                         <input type="text" class="form-control" required name="content" >
                     </div>
-              <!--      <div class="form-group">
-                        <label>Trạng thái</label>
-                        <input type="text" class="form-control" required name="status" >
-                    </div>-->
+                    <!--      <div class="form-group">
+                              <label>Trạng thái</label>
+                              <input type="text" class="form-control" required name="status" >
+                          </div>-->
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy bỏ">
@@ -292,11 +285,11 @@
         console.log( document.querySelector(".titleDelete"));
     }
 
-   /* function Update(id,title,content,status){
-        document.querySelector(".titleUpdate").innerHTML = title;
-        document.querySelector(".contentUpdate").innerHTML = content;
-        document.querySelector(".statusUpdate").innerHTML = status;
-    }*/
+    /* function Update(id,title,content,status){
+         document.querySelector(".titleUpdate").innerHTML = title;
+         document.querySelector(".contentUpdate").innerHTML = content;
+         document.querySelector(".statusUpdate").innerHTML = status;
+     }*/
 </script>
 
 </body>

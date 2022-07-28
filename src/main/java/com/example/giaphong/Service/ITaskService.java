@@ -13,6 +13,14 @@ public interface ITaskService {
 
     List<TaskEntity> findAll();
 
+    Page<TaskEntity> findByKeywork(String keywork, Pageable pageable);
+
+    List<TaskEntity> findByStatus2();
+
+    List<TaskEntity> findByStatus3();
+
+    List<TaskEntity> findByStatus();
+
     Page<TaskEntity> findAll(Pageable pageable);
 
     List<TaskEntity> findAllById(Iterable<Integer> integers);

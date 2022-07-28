@@ -15,8 +15,8 @@ public class TaskEntity extends BaseEntity {
     @Column(name = "content", nullable = false, columnDefinition = "LONGTEXT")
     private String content;
 
-    @Column(name = "status", nullable = false)
-    private int status;
+    @Column(name = "status",length = 50 , nullable = false)
+    private String status;
 
     public String getTitle() {
         return title;
@@ -34,13 +34,11 @@ public class TaskEntity extends BaseEntity {
         this.content = content;
     }
 
-
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
-
 }
