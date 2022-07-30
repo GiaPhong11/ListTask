@@ -1,8 +1,6 @@
 package com.example.giaphong.Entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tbl_tasks")
@@ -17,6 +15,10 @@ public class TaskEntity extends BaseEntity {
 
     @Column(name = "status",length = 50 , nullable = false)
     private String status;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id") // Tên khóa phụ trong bảng Tasks
+    private UserEntity userEntity; // đây là cái mappedBy
 
     public String getTitle() {
         return title;

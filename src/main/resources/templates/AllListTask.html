@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div class="float-right flex">
-                        <form th:action="@{/index}" method="get">
+                        <form th:action="@{/admin/index}" method="get">
                             <div class="search">
                                 <input type="text" name="keywork" placeholder="Từ khóa"/>
                                 <!-- Keyword lấy theo parameter  -->
@@ -47,34 +47,34 @@
                             </a>
 
                             <div class="dropdown-menu " aria-labelledby="dropdownMenuLink">
-                                <form th:action="@{/index}" method="get">
+                                <form th:action="@{/admin/index}" method="get">
                                     <div class="search">
-                                        <input type="hidden" name="keywork" th:value="Open" placeholder="Từ khóa"/>
+                                        <input type="hidden" name="status" th:value="Open" placeholder="Từ khóa"/>
                                         <button class="dropdown-item" type="submit" >Open</button>
                                     </div>
                                 </form>
-                                <form th:action="@{/index}" method="get">
+                                <form th:action="@{/admin/index}" method="get">
                                     <div class="search">
-                                        <input type="hidden" name="keywork" th:value="Inprogress" placeholder="Từ khóa"/>
+                                        <input type="hidden" name="status" th:value="Inprogress" placeholder="Từ khóa"/>
                                         <button class="dropdown-item" type="submit" >Inprogress</button>
                                     </div>
                                 </form>
-                                <form th:action="@{/index}" method="get">
+                                <form th:action="@{/admin/index}" method="get">
                                     <div class="search">
-                                        <input type="hidden" name="keywork" th:value="Done" placeholder="Từ khóa"/>
+                                        <input type="hidden" name="status" th:value="Done" placeholder="Từ khóa"/>
                                         <button class="dropdown-item" type="submit" >Done</button>
                                     </div>
                                 </form>
-                                <form th:action="@{/index2}" method="get">
+                                <form th:action="@{/admin/index2}" method="get">
                                     <div class="search">
                                         <button class="dropdown-item" type="submit" >All</button>
                                     </div>
                                 </form>
-                                <form th:action="@{/index}" method="get">
+                               <!-- <form th:action="@{/index}" method="get">
                                     <div class="search">
                                         <button class="dropdown-item" type="submit" >Page</button>
                                     </div>
-                                </form>
+                                </form>-->
                             </div>
 
                         </div>

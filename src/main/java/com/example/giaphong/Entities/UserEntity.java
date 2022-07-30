@@ -3,10 +3,10 @@ package com.example.giaphong.Entities;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_users")
@@ -23,6 +23,9 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @Column(name = "status", nullable = true)
     private Boolean status = Boolean.TRUE;
 
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "userEntity")
+    //Cái giá trị mappedBy sẽ được lấy theo cái tên bên class product, theo cái trường
+    private Set<TaskEntity> tasks = new HashSet<TaskEntity>();
     public Boolean getStatus() {
         return status;
     }

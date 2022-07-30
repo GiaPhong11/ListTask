@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -14,37 +15,44 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-public class ListTaskController {
+public class ListTaskController extends BaseController {
 
     @Autowired
     private TaskService taskService;
 
-    @GetMapping("/index")
+    @GetMapping("/admin/index")
     public String ListTask(
             Model model,HttpServletRequest request,
             @RequestParam(name="keywork",required = false )String keywork,
+            @RequestParam(name="status",required = false )String status,
+
             @RequestParam("page") Optional<Integer> page,
             @RequestParam("size") Optional<Integer> size) {
 
         //Giá trị ngầm định là 1 khi không nhập
         int currentPage = page.orElse(0);
         //5 giá trị trên 1 trnag
-        int pageSize = size.orElse(5);
+        int pageSize = size.orElse(10   );
         //Thực hiện sắp xếp theo status
+
         Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id"));
         Page<TaskEntity> resultPage = null;
-
         if(StringUtils.hasText(keywork)) {
             resultPage =taskService.findByKeywork(keywork, pageable);
-            model.addAttribute("title", keywork);
         }else {
             resultPage = taskService.findAll(pageable);
         }
+
+        if(StringUtils.hasText(status)) {
+            resultPage =taskService.findByStatus(status, pageable);
+        }
+
         // Trả về tổng số trang hiển thị
         int totalPages = resultPage.getTotalPages();
         if (totalPages > 0) {
@@ -65,58 +73,47 @@ public class ListTaskController {
             model.addAttribute("totalElements", resultPage.getTotalElements());
         }
         List<TaskEntity> alltask = taskService.findAll();
-        List<TaskEntity> OpenTask = taskService.findByStatus();
-        List<TaskEntity> InprTask = taskService.findByStatus2();
-        List<TaskEntity> DoneTask = taskService.findByStatus3();
         //Đẩy xuống tầng view
-        model.addAttribute("InprTask", InprTask);
-        model.addAttribute("OpenTask", OpenTask);
-        model.addAttribute("DoneTask", DoneTask);
         model.addAttribute("taskPage", resultPage);
         model.addAttribute("alltask",alltask);
         return "ListTask";
     }
 
-    @GetMapping("/index2")
+    @GetMapping("/admin/index2")
     public String ListTask2(
             Model model,HttpServletRequest request) {
         List<TaskEntity> alltask = taskService.findAll();
-        //Giá trị ngầm định là 1 khi không nhập
         model.addAttribute("alltask",alltask);
         return "AllListTask";
     }
 
-
-
-
-
-    @PostMapping(value = "/addLisk")
+    @PostMapping(value = "/admin/addLisk")
     public String create(HttpServletRequest request) {
         TaskEntity task = new TaskEntity();
         task.setTitle(request.getParameter("title").trim());
         task.setContent(request.getParameter("content").trim());
         task.setStatus("Open");
         taskService.save(task);
-        return "redirect:/index";
+        return "redirect:/admin/index";
     }
 
-    @PostMapping(value = "/delete")
+    @PostMapping(value = "/admin/delete")
     public String delete(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         taskService.deleteById(id);
-        return "redirect:/index";
+        return "redirect:admin/index";
     }
 
-    @PostMapping(value = "/update")
+    @PostMapping(value = "/admin/update")
     public String update(Model model,HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         TaskEntity task = taskService.findById(id);
         model.addAttribute("task", task);
         task.setTitle(request.getParameter("title").trim());
         task.setContent(request.getParameter("content").trim());
-        task.setStatus((request.getParameter("status")));
+        task.setStatus(request.getParameter("percentage").trim());
         taskService.save(task);
-        return "redirect:/index";
+        return "redirect:/admin/index";
     }
 
 

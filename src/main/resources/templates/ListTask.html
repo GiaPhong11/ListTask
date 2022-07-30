@@ -21,6 +21,8 @@
         <div class="col mt-4">
             <div class="card">
                 <div class="card-header">
+                    Welcome <span th:text ="${userLogined.username }"></span>
+                    <a th:href="@{/logout}" type="submit">Logout</a>
                     <h2 class="text-center"> List Task</h2>
                 </div>
                 <div class="taskbar">
@@ -33,7 +35,7 @@
                         </div>
                     </div>
                     <div class="float-right flex">
-                        <form th:action="@{/index}" method="get">
+                        <form th:action="@{/admin/index}" method="get">
                         <div class="search">
                             <input type="text" name="keywork" placeholder="Từ khóa"/>
                             <!-- Keyword lấy theo parameter  -->
@@ -47,35 +49,35 @@
                             </a>
 
                             <div class="dropdown-menu " aria-labelledby="dropdownMenuLink">
-                                <form th:action="@{/index}" method="get">
+                                <form th:action="@{/admin/index}" method="get">
                                     <div class="search">
-                                        <input type="hidden" name="keywork" th:value="Open" placeholder="Từ khóa"/>
+                                            <input type="hidden" name="status" th:value="Open" placeholder="Từ khóa"/>
                                 <button class="dropdown-item" type="submit" >Open</button>
                                     </div>
                                 </form>
-                                <form th:action="@{/index}" method="get">
+                                <form th:action="@{/admin/index}" method="get">
                                     <div class="search">
-                                        <input type="hidden" name="keywork" th:value="Inprogress" placeholder="Từ khóa"/>
+                                        <input type="hidden" name="status" th:value="Inprogress" placeholder="Từ khóa"/>
                                         <button class="dropdown-item" type="submit" >Inprogress</button>
                                     </div>
                                 </form>
-                                <form th:action="@{/index}" method="get">
+                                <form th:action="@{/admin/index}" method="get">
                                     <div class="search">
-                                        <input type="hidden" name="keywork" th:value="Done" placeholder="Từ khóa"/>
+                                        <input type="hidden" name="status" th:value="Done" placeholder="Từ khóa"/>
                                         <button class="dropdown-item" type="submit" >Done</button>
                                     </div>
                                 </form>
-                                <form th:action="@{/index2}" method="get">
+                                <form th:action="@{/admin/index2}" method="get">
                                     <div class="search">
                                         <button class="dropdown-item" type="submit" >All</button>
                                     </div>
                                 </form>
-                                <form th:action="@{/index}" method="get">
+                                <!--<form th:action="@{/index}" method="get">
                                     <div class="search">
 
                                         <button class="dropdown-item" type="submit" >Page</button>
                                     </div>
-                                </form>
+                                </form>-->
                             </div>
 
                         </div>
@@ -135,21 +137,21 @@
                          th:if="${taskPage.totalPages>0}" class="float-right">
                         <ul class="pagination justify-content-center">
                             <li th:class="${1 == taskPage.number + 1} ? 'page-item' : 'page-item'">
-                                <a th:href="@{/index(size=${taskPage.size},page=${0})}"
+                                <a th:href="@{/admin/index(size=${taskPage.size},page=${0})}"
                                    class="page-link">First</a>
                             </li>
                             <li class="page-item active"
                                 th:each="pageNumber : ${pageNumbers}"
                                 th:if="${taskPage.totalPages > 1}"
                                 th:class="${pageNumber == taskPage.number + 1} ? 'page-item' : 'page-item'">
-                                <a th:href="@{/index(size=${taskPage.size},page=${pageNumber-1})}"
+                                <a th:href="@{/admin/index(size=${taskPage.size},page=${pageNumber-1})}"
                                    class="page-link" th:text="${pageNumber}">
                                 </a>
 
 
                             </li>
                             <li th:class="${taskPage.totalPages == taskPage.number + 1} ? 'page-item' : 'page-item'">
-                                <a th:href="@{/index(size=${taskPage.size},page=${taskPage.totalPages-1})}"
+                                <a th:href="@{/admin/index(size=${taskPage.size},page=${taskPage.totalPages-1})}"
                                    class="page-link">Last
                                 </a>
                             </li>
@@ -165,9 +167,9 @@
 <div id="addEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form th:action="@{/addLisk}" method="POST">
+            <form th:action="@{/admin/addLisk}" method="POST">
                 <div class="modal-header">
-                    <a th:href="@{/addList/}" class="modal-title">Tạo mới</a>
+                    <a th:href="@{/admin/addList/}" class="modal-title">Tạo mới</a>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -196,9 +198,9 @@
 <div id="editEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form th:action="@{/update}" method="POST">
+            <form th:action="@{/admin/update}" method="POST">
                 <div class="modal-header">
-                    <a th:href="@{/update/}" class="modal-title">Chỉnh sửa Task</a>
+                    <a th:href="@{/admin/update/}" class="modal-title">Chỉnh sửa Task</a>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -212,7 +214,12 @@
                     </div>
                     <div class="form-group">
                         <label>Trạng thái</label>
-                        <textarea class="form-control statusUpdate" id="status" name="status" required></textarea>
+<!--                        <textarea class="form-control statusUpdate" id="status" name="status" required></textarea>-->
+                        <select id="status" name="percentage">
+                            <option name="status" id="status1"  >Open</option>
+                            <option name="status" id="status2"  >Inprogress</option>
+                            <option name="status" id="status3"  >Done</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -228,9 +235,9 @@
 <div id="deleteEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form th:action="@{/delete}" method="POST">
+            <form th:action="@{/admin/delete}" method="POST">
                 <div class="modal-header">
-                    <a th:href="@{/delete/}" class="modal-title">Xóa Task</a>
+                    <a th:href="@{/admin/delete/}" class="modal-title">Xóa Task</a>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -239,7 +246,7 @@
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                     <input type="submit" class="btn btn-danger" value="Delete">
-                    <input type="text" name="id" id="id" readonly>
+                    <input type="hidden" name="id" id="id" readonly>
                 </div>
             </form>
         </div>
@@ -262,6 +269,7 @@
 <script>
     $(document).ready(function(){
         // Activate tooltip
+
         $('[data-toggle="tooltip"]').tooltip();
 
         $('table .delete').on('click',function (){
@@ -271,6 +279,7 @@
         });
 
         $('table .editTask').on('click',function (){
+            debugger
             var id = $(this).parent().find('#id').val();
             console.log("Id: "+id);
             $.ajax({

@@ -22,25 +22,22 @@ public class TaskService implements ITaskService {
 
 
     @Override
+    public List<TaskEntity> findByUserid(int id) {
+        return taskrepo.findByUserid(id);
+    }
+
+    @Override
     public Page<TaskEntity> findByKeywork(String keywork, Pageable pageable) {
         return taskrepo.findByKeywork(keywork, pageable);
     }
 
+
     @Override
-    public List<TaskEntity> findByStatus2() {
-        return taskrepo.findByStatus2();
+    public Page<TaskEntity> findByStatus(String status, Pageable pageable) {
+        return taskrepo.findByStatus(status, pageable);
     }
 
 
-    @Override
-    public List<TaskEntity> findByStatus3() {
-        return taskrepo.findByStatus3();
-    }
-
-    @Override
-    public List<TaskEntity> findByStatus() {
-        return taskrepo.findByStatus();
-    }
 
     @Override
     public Page<TaskEntity> findAll(Pageable pageable) {

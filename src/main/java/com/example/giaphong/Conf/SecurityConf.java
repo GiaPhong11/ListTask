@@ -22,25 +22,22 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
 
-				// Cho phép các request static không bị ràng buộc
-				.antMatchers("/user/**", "/manager/**", "/upload/**").permitAll()
 
-				// Các request kiểu "/admin/" phải đăng nhập
-				/*.antMatchers("/admin/**").hasAuthority("ADMIN")
-				.antMatchers("/user/home").hasRole("GUEST")*/
+				.antMatchers("/admin/**").authenticated()/*hasAuthority("ADMIN")*/
+				/*.antMatchers("/user/home").hasRole("GUEST")*/
 				.and()
 
 				// Cấu hình trang đăng nhập
 				.formLogin().loginPage("/login").loginProcessingUrl("/perform_login").
 
-				defaultSuccessUrl("/index", true)
+				defaultSuccessUrl("/admin/index", true)
 				.failureUrl("/login?login_error=true")
-				.permitAll()//
+				.permitAll() //
 
 				.and()
 
 				//Cấu hình trang logout
-				.logout().logoutUrl("/logout").logoutSuccessUrl("/index").invalidateHttpSession(true)
+				.logout().logoutUrl("/logout").logoutSuccessUrl("/login").invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID").permitAll();
 	}
 
