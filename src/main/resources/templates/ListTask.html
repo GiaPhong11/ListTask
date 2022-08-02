@@ -21,7 +21,7 @@
         <div class="col mt-4">
             <div class="card">
                 <div class="card-header">
-                    Welcome <span th:text ="${userLogined.username }"></span>
+                    Welcome <span th:text="${userLogined.username }"></span>
                     <a th:href="@{/logout}" type="submit">Logout</a>
                     <h2 class="text-center"> List Task</h2>
                 </div>
@@ -31,17 +31,19 @@
                             <button type="button" class="btn btn-secondary">Export CSV</button>
                         </div>
                         <div class="btn-add">
-                            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Tạo mới</span></a>
+                            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
+                                    class="material-icons">&#xE147;</i> <span>Tạo mới</span></a>
                         </div>
                     </div>
                     <div class="float-right flex">
                         <form th:action="@{/admin/index}" method="get">
-                        <div class="search">
-                            <input type="text" name="keywork" placeholder="Từ khóa"/>
-                            <!-- Keyword lấy theo parameter  -->
-                            <button type="submit" class="btn btn-info">Tìm kiếm</button>
-                        </div>
+                            <div class="search">
+                                <input type="text" name="keyword" placeholder="Từ khóa"/>
+                                <!-- Keyword lấy theo parameter  -->
+                                <button type="submit" class="btn btn-info">Tìm kiếm</button>
+                            </div>
                         </form>
+
                         <div class="drop dropdown show float-right">
                             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,34 +52,19 @@
 
                             <div class="dropdown-menu " aria-labelledby="dropdownMenuLink">
                                 <form th:action="@{/admin/index}" method="get">
-                                    <div class="search">
-                                            <input type="hidden" name="status" th:value="Open" placeholder="Từ khóa"/>
-                                <button class="dropdown-item" type="submit" >Open</button>
-                                    </div>
-                                </form>
-                                <form th:action="@{/admin/index}" method="get">
-                                    <div class="search">
-                                        <input type="hidden" name="status" th:value="Inprogress" placeholder="Từ khóa"/>
-                                        <button class="dropdown-item" type="submit" >Inprogress</button>
-                                    </div>
-                                </form>
-                                <form th:action="@{/admin/index}" method="get">
-                                    <div class="search">
-                                        <input type="hidden" name="status" th:value="Done" placeholder="Từ khóa"/>
-                                        <button class="dropdown-item" type="submit" >Done</button>
-                                    </div>
+                                    <button class="dropdown-item" name="status" th:value="Open" type="submit">Open
+                                    </button>
+                                    <button class="dropdown-item" name="status" th:value="Inprogress" type="submit">
+                                        Inprogress
+                                    </button>
+                                    <button class="dropdown-item" name="status" type="submit">Done</button>
                                 </form>
                                 <form th:action="@{/admin/index2}" method="get">
                                     <div class="search">
-                                        <button class="dropdown-item" type="submit" >All</button>
+                                        <button class="dropdown-item" type="submit">All</button>
                                     </div>
                                 </form>
-                                <!--<form th:action="@{/index}" method="get">
-                                    <div class="search">
 
-                                        <button class="dropdown-item" type="submit" >Page</button>
-                                    </div>
-                                </form>-->
                             </div>
 
                         </div>
@@ -110,10 +97,13 @@
                             <td>
                                 <a class="btn btn-outline-info" href=""><!--<i class="fa-solid fa-circle-info"></i>-->
                                     Chi tiết</a>
-                                <a href="#editEmployeeModal" class="editTask btn btn-outline-warning" data-toggle="modal">Chỉnh sửa</a>
-                                <a href="#deleteEmployeeModal" th:onclick="titleDelete([[${list.id}]],[[${list.title}]])" class="delete btn btn-outline-danger" data-toggle="modal">Xóa</a>
+                                <a href="#editEmployeeModal" class="editTask btn btn-outline-warning"
+                                   data-toggle="modal">Chỉnh sửa</a>
+                                <a href="#deleteEmployeeModal"
+                                   th:onclick="titleDelete([[${list.id}]],[[${list.title}]])"
+                                   class="delete btn btn-outline-danger" data-toggle="modal">Xóa</a>
                                 <input type="hidden" id="id" th:value="${list.id}">
-                                <input type="hidden" id="id2" th:value="${list.title}">
+                                <input type="hidden" id="userid" th:value="${list.title}">
                             </td>
                         </tr>
                         </tbody>
@@ -175,16 +165,16 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Tiêu đề</label>
-                        <input type="text" class="form-control" required name="title" >
+                        <input type="text" class="form-control" required name="title">
                     </div>
                     <div class="form-group">
                         <label>Nội dung</label>
-                        <input type="text" class="form-control" required name="content" >
+                        <input type="text" class="form-control" required name="content">
                     </div>
-              <!--      <div class="form-group">
-                        <label>Trạng thái</label>
-                        <input type="text" class="form-control" required name="status" >
-                    </div>-->
+                    <!--      <div class="form-group">
+                              <label>Trạng thái</label>
+                              <input type="text" class="form-control" required name="status" >
+                          </div>-->
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy bỏ">
@@ -206,7 +196,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Tiêu đề</label>
-                        <input type="text" class="form-control titleUpdate" id="title" name="title"  required>
+                        <input type="text" class="form-control titleUpdate" id="title" name="title" required>
                     </div>
                     <div class="form-group">
                         <label>Nội dung</label>
@@ -214,11 +204,11 @@
                     </div>
                     <div class="form-group">
                         <label>Trạng thái</label>
-<!--                        <textarea class="form-control statusUpdate" id="status" name="status" required></textarea>-->
+                        <!--                        <textarea class="form-control statusUpdate" id="status" name="status" required></textarea>-->
                         <select id="status" name="percentage">
-                            <option name="status" id="status1"  >Open</option>
-                            <option name="status" id="status2"  >Inprogress</option>
-                            <option name="status" id="status3"  >Done</option>
+                            <option name="status" id="status1">Open</option>
+                            <option name="status" id="status2">Inprogress</option>
+                            <option name="status" id="status3">Done</option>
                         </select>
                     </div>
                 </div>
@@ -226,6 +216,7 @@
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy bỏ">
                     <input type="submit" class="btn btn-info" value="Lưu">
                     <input type="hidden" id="id" name="id" readonly>
+
                 </div>
             </form>
         </div>
@@ -241,7 +232,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <p >Bạn có chắc muốn xóa <span class="titleDelete"></span></p>
+                    <p>Bạn có chắc muốn xóa <span class="titleDelete"></span></p>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -256,7 +247,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
 <!--  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script> -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
@@ -264,29 +256,31 @@
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 
-<<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bootpag/1.0.4/jquery.bootpag.min.js"></script>
+<
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bootpag/1.0.4/jquery.bootpag.min.js"></script>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         // Activate tooltip
 
         $('[data-toggle="tooltip"]').tooltip();
 
-        $('table .delete').on('click',function (){
+        $('table .delete').on('click', function () {
             var id = $(this).parent().find('#id').val();
             $('#deleteEmployeeModal #id').val(id);
 
         });
 
-        $('table .editTask').on('click',function (){
+        $('table .editTask').on('click', function () {
             debugger
             var id = $(this).parent().find('#id').val();
-            console.log("Id: "+id);
+            console.log("Id: " + id);
             $.ajax({
                 type: 'GET',
                 url: '../api/find/' + id,
-                success: function(task){
-                    console.log("Task: "+task.title);
+                success: function (task) {
+                    console.log("Task: " + task.title);
                     $('#editEmployeeModal #id').val(id);
                     $('#editEmployeeModal #title').val(task.title);
                     $('#editEmployeeModal #content').val(task.content);
@@ -296,16 +290,16 @@
         });
     });
 
-    function titleDelete(id,title){
+    function titleDelete(id, title) {
         document.querySelector(".titleDelete").innerHTML = title;
-        console.log( document.querySelector(".titleDelete"));
+        console.log(document.querySelector(".titleDelete"));
     }
 
-   /* function Update(id,title,content,status){
-        document.querySelector(".titleUpdate").innerHTML = title;
-        document.querySelector(".contentUpdate").innerHTML = content;
-        document.querySelector(".statusUpdate").innerHTML = status;
-    }*/
+    /* function Update(id,title,content,status){
+         document.querySelector(".titleUpdate").innerHTML = title;
+         document.querySelector(".contentUpdate").innerHTML = content;
+         document.querySelector(".statusUpdate").innerHTML = status;
+     }*/
 </script>
 
 </body>

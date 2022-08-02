@@ -33,9 +33,8 @@ public class ListTaskController extends BaseController {
     @GetMapping("/admin/index")
     public String ListTask(
             Model model,HttpServletRequest request,
-            @RequestParam(name="keywork",required = false )String keywork,
+            @RequestParam(name="keyword",required = false )String keyword,
             @RequestParam(name="status",required = false )String status,
-
             @RequestParam("page") Optional<Integer> page,
             @RequestParam("size") Optional<Integer> size) {
 
@@ -47,8 +46,8 @@ public class ListTaskController extends BaseController {
 
         Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id"));
         Page<TaskEntityJPA> resultPage = null;
-        if(StringUtils.hasText(keywork)) {
-            resultPage =taskService.findByKeywork(keywork, pageable);
+        if(StringUtils.hasText(keyword)) {
+            resultPage =taskService.findByKeywork(keyword, pageable);
         }else {
             resultPage = taskService.findAll(pageable);
         }
@@ -93,10 +92,12 @@ public class ListTaskController extends BaseController {
 
     @PostMapping(value = "/admin/addLisk")
     public String create(HttpServletRequest request) {
+
         TaskEntity task = new TaskEntity();
         task.setTitle(request.getParameter("title").trim());
         task.setContent(request.getParameter("content").trim());
         task.setStatus("Open");
+
         taskMapper.insert(task);
         return "redirect:/admin/index";
     }
