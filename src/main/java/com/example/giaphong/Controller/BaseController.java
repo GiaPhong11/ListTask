@@ -1,6 +1,6 @@
 package com.example.giaphong.Controller;
 
-import com.example.giaphong.Entities.UserEntity;
+import com.example.giaphong.Entities.UserEntityJPA;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,10 +19,10 @@ public class BaseController {
 
     // Trả về thông tin của đối tượng User
     @ModelAttribute("userLogined")
-    public UserEntity getUserLogined() {
+    public UserEntityJPA getUserLogined() {
         Object userLogined = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userLogined != null && userLogined instanceof UserDetails)
-            return (UserEntity) userLogined;
+            return (UserEntityJPA) userLogined;
 
         return null;
     }

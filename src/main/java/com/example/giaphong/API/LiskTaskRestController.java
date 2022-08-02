@@ -1,7 +1,7 @@
 package com.example.giaphong.API;
 
 
-import com.example.giaphong.Entities.TaskEntity;
+import com.example.giaphong.Entities.TaskEntityJPA;
 import com.example.giaphong.Service.impl.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,11 +17,11 @@ public class LiskTaskRestController {
     private TaskService taskService;
 
     @GetMapping(value = "api/find/{id}")
-    public ResponseEntity<TaskEntity> find(@PathVariable("id") int id){
+    public ResponseEntity<TaskEntityJPA> find(@PathVariable("id") int id){
         try{
-            return new ResponseEntity<TaskEntity>(taskService.findById(id), HttpStatus.OK);
+            return new ResponseEntity<TaskEntityJPA>(taskService.findById(id), HttpStatus.OK);
         }catch (Exception e ){
-            return new ResponseEntity<TaskEntity>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<TaskEntityJPA>(HttpStatus.BAD_REQUEST);
         }
     }
 

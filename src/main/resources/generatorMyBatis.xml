@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+
+  <context id="DB2Tables" targetRuntime="MyBatis3">
+    <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+        connectionURL="jdbc:mysql://127.0.0.1:3306/fresherjava"
+        userId="root"
+        password="Mythh1711">
+    </jdbcConnection>
+
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <javaModelGenerator targetPackage="com.example.giaphong.model" targetProject="GiaPhong"/>
+    
+    <sqlMapGenerator targetPackage="com.example.giaphong.mapper.sql"  targetProject="GiaPhong/src/main/resources"/>
+
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.giaphong.mapper"  targetProject="GiaPhong"/>
+
+    <table tableName="tbl_users" domainObjectName="UserEntity" />
+
+  </context>
+</generatorConfiguration>

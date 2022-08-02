@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tbl_users")
-public class UserEntity extends BaseEntity implements UserDetails {
+public class UserEntityJPA extends BaseEntity implements UserDetails {
     @Column(name = "username", length = 45, nullable = false)
     private String username;
 
@@ -25,7 +25,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "userEntity")
     //Cái giá trị mappedBy sẽ được lấy theo cái tên bên class product, theo cái trường
-    private Set<TaskEntity> tasks = new HashSet<TaskEntity>();
+    private Set<TaskEntityJPA> tasks = new HashSet<TaskEntityJPA>();
     public Boolean getStatus() {
         return status;
     }

@@ -1,13 +1,14 @@
 package com.example.giaphong.Controller;
 
-import com.example.giaphong.Entities.TaskEntity;
+import com.example.giaphong.Entities.TaskEntityJPA;
 import com.example.giaphong.Service.impl.TaskService;
+import com.example.giaphong.mapper.TaskEntityMapper;
+import com.example.giaphong.model.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -25,6 +26,9 @@ public class ListTaskController extends BaseController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    TaskEntityMapper taskMapper;
 
     @GetMapping("/admin/index")
     public String ListTask(
@@ -42,7 +46,7 @@ public class ListTaskController extends BaseController {
         //Thực hiện sắp xếp theo status
 
         Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id"));
-        Page<TaskEntity> resultPage = null;
+        Page<TaskEntityJPA> resultPage = null;
         if(StringUtils.hasText(keywork)) {
             resultPage =taskService.findByKeywork(keywork, pageable);
         }else {
@@ -72,7 +76,7 @@ public class ListTaskController extends BaseController {
             model.addAttribute("number", resultPage.getNumber());
             model.addAttribute("totalElements", resultPage.getTotalElements());
         }
-        List<TaskEntity> alltask = taskService.findAll();
+        List<TaskEntityJPA> alltask = taskService.findAll();
         //Đẩy xuống tầng view
         model.addAttribute("taskPage", resultPage);
         model.addAttribute("alltask",alltask);
@@ -82,7 +86,7 @@ public class ListTaskController extends BaseController {
     @GetMapping("/admin/index2")
     public String ListTask2(
             Model model,HttpServletRequest request) {
-        List<TaskEntity> alltask = taskService.findAll();
+        List<Map<String,Object>> alltask = taskMapper.findAll();
         model.addAttribute("alltask",alltask);
         return "AllListTask";
     }
@@ -93,26 +97,26 @@ public class ListTaskController extends BaseController {
         task.setTitle(request.getParameter("title").trim());
         task.setContent(request.getParameter("content").trim());
         task.setStatus("Open");
-        taskService.save(task);
+        taskMapper.insert(task);
         return "redirect:/admin/index";
     }
 
     @PostMapping(value = "/admin/delete")
     public String delete(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
-        taskService.deleteById(id);
-        return "redirect:admin/index";
+        taskMapper.deleteByPrimaryKey(id);
+        return "redirect:/admin/index";
     }
 
     @PostMapping(value = "/admin/update")
     public String update(Model model,HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
-        TaskEntity task = taskService.findById(id);
+        TaskEntity task = taskMapper.selectByPrimaryKey(id);
         model.addAttribute("task", task);
         task.setTitle(request.getParameter("title").trim());
         task.setContent(request.getParameter("content").trim());
         task.setStatus(request.getParameter("percentage").trim());
-        taskService.save(task);
+        taskMapper.updateByPrimaryKey(task);
         return "redirect:/admin/index";
     }
 

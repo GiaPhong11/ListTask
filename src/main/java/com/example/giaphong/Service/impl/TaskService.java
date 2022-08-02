@@ -1,6 +1,6 @@
 package com.example.giaphong.Service.impl;
 
-import com.example.giaphong.Entities.TaskEntity;
+import com.example.giaphong.Entities.TaskEntityJPA;
 import com.example.giaphong.Repository.TaskRepository;
 import com.example.giaphong.Service.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,47 +16,43 @@ public class TaskService implements ITaskService {
     private TaskRepository taskrepo;
 
     @Override
-    public List<TaskEntity> findAll() {
+    public List<TaskEntityJPA> findAll() {
         return taskrepo.findAll();
     }
 
 
-    @Override
-    public List<TaskEntity> findByUserid(int id) {
-        return taskrepo.findByUserid(id);
-    }
 
     @Override
-    public Page<TaskEntity> findByKeywork(String keywork, Pageable pageable) {
+    public Page<TaskEntityJPA> findByKeywork(String keywork, Pageable pageable) {
         return taskrepo.findByKeywork(keywork, pageable);
     }
 
 
     @Override
-    public Page<TaskEntity> findByStatus(String status, Pageable pageable) {
+    public Page<TaskEntityJPA> findByStatus(String status, Pageable pageable) {
         return taskrepo.findByStatus(status, pageable);
     }
 
 
 
     @Override
-    public Page<TaskEntity> findAll(Pageable pageable) {
+    public Page<TaskEntityJPA> findAll(Pageable pageable) {
         return taskrepo.findAll(pageable);
     }
 
     @Override
-    public List<TaskEntity> findAllById(Iterable<Integer> integers) {
+    public List<TaskEntityJPA> findAllById(Iterable<Integer> integers) {
         return taskrepo.findAllById(integers);
     }
 
 
     @Override
-    public TaskEntity findById(int id) {
+    public TaskEntityJPA findById(int id) {
         // TODO Auto-generated method stub
         return taskrepo.findById(id).get();
     }
     @Override
-    public <S extends TaskEntity> S save(S entity) {
+    public <S extends TaskEntityJPA> S save(S entity) {
         return taskrepo.save(entity);
     }
 
@@ -67,7 +63,7 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public void delete(TaskEntity entity) {
+    public void delete(TaskEntityJPA entity) {
         taskrepo.delete(entity);
     }
 

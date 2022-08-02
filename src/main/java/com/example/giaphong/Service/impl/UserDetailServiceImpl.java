@@ -1,6 +1,6 @@
 package com.example.giaphong.Service.impl;
 
-import com.example.giaphong.Entities.UserEntity;
+import com.example.giaphong.Entities.UserEntityJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,7 +15,7 @@ public class UserDetailServiceImpl implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserEntity user = userService.loadUserByUserName(username);
+		UserEntityJPA user = userService.loadUserByUserName(username);
 		return user;
 	}
 

@@ -1,27 +1,26 @@
 package com.example.giaphong.Service;
 
-import com.example.giaphong.Entities.UserEntity;
+import com.example.giaphong.Entities.UserEntityJPA;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IUserService {
 
 
-    UserEntity findByusername(String username) throws Exception;
+    UserEntityJPA findByusername(String username) throws Exception;
 
-    abstract List<UserEntity> findAll();
-
-
-    abstract Page<UserEntity> findAll(Pageable pageable);
+    abstract List<UserEntityJPA> findAll();
 
 
-    <S extends UserEntity> S save(S entity);
+    abstract Page<UserEntityJPA> findAll(Pageable pageable);
+
+
+    <S extends UserEntityJPA> S save(S entity);
 
 
     abstract void deleteAll();
 
-    UserEntity loadUserByUserName(String username);
+    UserEntityJPA loadUserByUserName(String username);
 }

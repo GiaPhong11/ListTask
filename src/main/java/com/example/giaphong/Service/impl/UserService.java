@@ -1,6 +1,6 @@
 package com.example.giaphong.Service.impl;
 
-import com.example.giaphong.Entities.UserEntity;
+import com.example.giaphong.Entities.UserEntityJPA;
 import com.example.giaphong.Repository.UserRepository;
 import com.example.giaphong.Service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
@@ -18,23 +17,23 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
 
     @Override
-    public UserEntity findByusername(String username) throws Exception {
+    public UserEntityJPA findByusername(String username) throws Exception {
         return userRepository.findByusername(username);
     }
 
     @Override
-    public List<UserEntity> findAll() {
+    public List<UserEntityJPA> findAll() {
         return userRepository.findAll();
     }
 
 
     @Override
-    public Page<UserEntity> findAll(Pageable pageable) {
+    public Page<UserEntityJPA> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
     @Override
-    public <S extends UserEntity> S save(S entity) {
+    public <S extends UserEntityJPA> S save(S entity) {
         return userRepository.save(entity);
     }
 
@@ -44,8 +43,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserEntity loadUserByUserName(String username) {
-        UserEntity users = userRepository.findByusername(username);
+    public UserEntityJPA loadUserByUserName(String username) {
+        UserEntityJPA users = userRepository.findByusername(username);
         return users;
     }
 

@@ -1,37 +1,34 @@
 package com.example.giaphong.Service;
 
 
-import com.example.giaphong.Entities.TaskEntity;
-import org.springframework.data.domain.Example;
+import com.example.giaphong.Entities.TaskEntityJPA;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ITaskService {
 
-    List<TaskEntity> findAll();
-
-    List<TaskEntity> findByUserid(int id);
-
-    Page<TaskEntity> findByKeywork(String keywork, Pageable pageable);
-
-    Page<TaskEntity> findByStatus(String status, Pageable pageable);
+    List<TaskEntityJPA> findAll();
 
 
+    Page<TaskEntityJPA> findByKeywork(String keywork, Pageable pageable);
 
-    Page<TaskEntity> findAll(Pageable pageable);
+    Page<TaskEntityJPA> findByStatus(String status, Pageable pageable);
 
-    List<TaskEntity> findAllById(Iterable<Integer> integers);
 
-    TaskEntity findById(int id);
 
-    <S extends TaskEntity> S save(S entity);
+    Page<TaskEntityJPA> findAll(Pageable pageable);
+
+    List<TaskEntityJPA> findAllById(Iterable<Integer> integers);
+
+    TaskEntityJPA findById(int id);
+
+    <S extends TaskEntityJPA> S save(S entity);
 
     void deleteById(Integer integer);
 
-    void delete(TaskEntity entity);
+    void delete(TaskEntityJPA entity);
 
 
 }

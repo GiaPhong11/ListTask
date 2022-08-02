@@ -1,7 +1,6 @@
 package com.example.giaphong.Controller;
 
-import com.example.giaphong.DTO.SimpleUser;
-import com.example.giaphong.Entities.UserEntity;
+import com.example.giaphong.Entities.UserEntityJPA;
 import com.example.giaphong.Service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,7 +30,7 @@ public class LoginController extends BaseController {
                            final HttpServletResponse response)
             throws IOException {
 
-        model.addAttribute("regis", new UserEntity());
+        model.addAttribute("regis", new UserEntityJPA());
 
         return "SingUp"; // -> duong dan toi VIEW.
     }
@@ -40,7 +39,7 @@ public class LoginController extends BaseController {
     public String saveContact(final Model model,
                               final HttpServletRequest request,
                               final HttpServletResponse response,
-                              final @ModelAttribute("regis") UserEntity regis)
+                              final @ModelAttribute("regis") UserEntityJPA regis)
             throws Exception {
         //b1: lay thong tin nguoi dung day len
         //	String email = request.getParameter("txtEmail");
@@ -60,7 +59,7 @@ public class LoginController extends BaseController {
         //@SuppressWarnings("unchecked")
 //        UserEntity user = new UserEntity();
 
-        UserEntity user = userService.findByusername(username);
+        UserEntityJPA user = userService.findByusername(username);
 //        }catch (Exception e){
 //            model.addAttribute("loi","Tài khoản đã tồn tại");
 //        }

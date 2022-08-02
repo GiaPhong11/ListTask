@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "tbl_tasks")
-public class TaskEntity extends BaseEntity {
+public class TaskEntityJPA extends BaseEntity {
 
     @Column(name = "title", length = 1000, nullable = false)
     private String title;
@@ -18,7 +18,7 @@ public class TaskEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id") // Tên khóa phụ trong bảng Tasks
-    private UserEntity userEntity; // đây là cái mappedBy
+    private UserEntityJPA userEntity; // đây là cái mappedBy
 
     public String getTitle() {
         return title;
