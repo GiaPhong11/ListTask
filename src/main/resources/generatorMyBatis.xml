@@ -17,11 +17,11 @@
       <property name="forceBigDecimals" value="false" />
     </javaTypeResolver>
 
-    <javaModelGenerator targetPackage="com.example.giaphong.model" targetProject="GiaPhong"/>
+    <javaModelGenerator targetPackage="com.example.list_task.model" targetProject="GiaPhong"/>
     
-    <sqlMapGenerator targetPackage="com.example.giaphong.mapper.sql"  targetProject="GiaPhong/src/main/resources"/>
+    <sqlMapGenerator targetPackage="com.example.list_task.mapper.sql"  targetProject="GiaPhong/src/main/resources"/>
 
-    <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.giaphong.mapper"  targetProject="GiaPhong"/>
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.list_task.mapper"  targetProject="GiaPhong"/>
 
     <table tableName="tbl_users" domainObjectName="UserEntity" />
 
