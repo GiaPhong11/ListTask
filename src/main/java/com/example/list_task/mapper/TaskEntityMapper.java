@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
-public interface TaskEntityMapper<findById> {
+public interface TaskEntityMapper{
 
     int deleteByPrimaryKey(Integer id);
 
@@ -26,7 +26,7 @@ public interface TaskEntityMapper<findById> {
 
     List<TaskEntity> findAll();
 
-    List<TaskEntity> findById(@Param("id") Integer id);
+    TaskEntity findById2(@Param("id") Integer id);
 
     List<TaskEntity> findByTitleContaining(@Param("title") String title, @Param("page") Pageable pageable);
 
@@ -34,18 +34,19 @@ public interface TaskEntityMapper<findById> {
 
     int countTasksFilterTitle(@Param("title") String title);
 
-    List<Task> findAllPage(@Param("page") Pageable pageable);
+    List<TaskEntity> findAllPage(@Param("page") Pageable pageable);
 
     Integer countAllTasks();
 
     Integer countTasksFilterTitleAndStatus(@Param("title") String title, @Param("status") TaskStatus status);
 
-    List<Task> findByTitleContainingAndTaskStatus(@Param("title") String title,
+    List<TaskEntity> findByTitleContainingAndTaskStatus(@Param("title") String title,
                                                   @Param("status") TaskStatus status,
                                                   @Param("page") Pageable pageable);
 
-    List<Task> findByTaskStatus(@Param("status") TaskStatus status, @Param("page") Pageable pageable);
+    List<TaskEntity> findByTaskStatus(@Param("status") TaskStatus status, @Param("page") Pageable pageable);
 
     Integer countTasksFilterStatus(@Param("status")TaskStatus status);
+
 
 }

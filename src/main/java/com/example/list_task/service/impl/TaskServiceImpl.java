@@ -1,10 +1,8 @@
 package com.example.list_task.service.impl;
 
-import com.example.list_task.entity.TaskEntityJPA;
 import com.example.list_task.mapper.TaskEntityMapper;
 import com.example.list_task.model.TaskEntity;
 import com.example.list_task.model.enums.TaskStatus;
-import com.example.list_task.repository.TaskRepository;
 import com.example.list_task.service.TaskService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,15 +17,16 @@ import java.util.Optional;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    private final TaskRepository taskRepository;
-
     private final TaskEntityMapper taskMapper;
 
-    public TaskServiceImpl(TaskRepository taskRepository, TaskEntityMapper taskMapper) {
-        this.taskRepository = taskRepository;
+    public TaskServiceImpl(TaskEntityMapper taskMapper) {
         this.taskMapper = taskMapper;
     }
 
+    @Override
+    public TaskEntity findById2(Integer id) {
+        return taskMapper.findById2(id);
+    }
     @Override
     public int deleteByPrimaryKey(Integer id) {
         return taskMapper.deleteByPrimaryKey(id);
@@ -49,29 +48,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Page<TaskEntityJPA> findByKeyword(String keyword, Pageable pageable) {
-        return taskRepository.findByKeyword(keyword, pageable);
-    }
-
-    @Override
     public List<TaskEntity> findAll() {
         return taskMapper.findAll();
-    }
-
-    @Override
-    public Page<TaskEntityJPA> findByStatus(String status, Pageable pageable) {
-        return taskRepository.findByStatus(status, pageable);
-    }
-
-    @Override
-    public Page<TaskEntityJPA> findAll(Pageable pageable) {
-        return taskRepository.findAll(pageable);
-    }
-
-
-    @Override
-    public TaskEntityJPA findById(int id) {
-        return taskRepository.findById(id).get();
     }
 
    @Override

@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SecurityConf extends WebSecurityConfigurerAdapter {
 	//1 interface nằm trong Spring Security
-
 	private final UserDetailsService userDetailsService;
 
 	public SecurityConf(UserDetailsService userDetailsService) {
@@ -26,15 +25,14 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().authorizeRequests()
 
 
-				.antMatchers("/admin/**").authenticated()/*hasAuthority("ADMIN")*/
-				/*.antMatchers("/user/home").hasRole("GUEST")*/
+				.antMatchers("/admin/**").authenticated()
 				.and()
 
 				// Cấu hình trang đăng nhập
 				.formLogin().loginPage("/login").loginProcessingUrl("/perform_login").
 
 				defaultSuccessUrl("/admin/pageTask", true)
-				.failureUrl("/login?login_error=true")
+				.failureUrl("/login/false")
 				.permitAll() //
 
 				.and()

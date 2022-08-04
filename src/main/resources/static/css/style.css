@@ -83,3 +83,12 @@ tr:last-child{
     height: 40px;
     text-align: center;
 }
+
+.detail_ta{
+    border: 2px solid #333;
+}
+
+.detail_ip{
+    border: none;
+    margin-bottom: 25px;
+}

@@ -1,6 +1,8 @@
 package com.example.list_task.controller;
 
-import com.example.list_task.entity.UserEntityJPA;
+/*import com.example.list_task.entity.UserEntityJPA;*/
+import com.example.list_task.model.UserEntity;
+import com.example.list_task.service.UserService;
 import com.example.list_task.service.impl.UserServiceImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,12 +16,11 @@ import java.io.IOException;
 @Controller
 public class LoginController extends BaseController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     public LoginController(UserServiceImpl userService) {
         this.userService = userService;
     }
-
 
     @GetMapping("/login")
     public String Home() {
@@ -32,16 +33,28 @@ public class LoginController extends BaseController {
                            final HttpServletResponse response)
             throws IOException {
 
-        model.addAttribute("regis", new UserEntityJPA());
+        model.addAttribute("regis", new UserEntity());
 
         return "SingUp"; // -> duong dan toi VIEW.
     }
 
+    @RequestMapping(value = {"/login/false"}, method = RequestMethod.GET) // -> action
+    public String loginFalse(final Model model,
+                           final HttpServletRequest request,
+                           final HttpServletResponse response)
+            throws IOException {
+
+        model.addAttribute("regis", new UserEntity());
+        model.addAttribute("loi", "Dang nhat that bai");
+
+        return "SingIn"; // -> duong dan toi VIEW.
+    }
+
+
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST) // -> action
     public String register(final Model model,
                            final HttpServletRequest request,
-                           final HttpServletResponse response,
-                           final @ModelAttribute("regis") UserEntityJPA regis)
+                           final @ModelAttribute("regis") UserEntity regis)
             throws Exception {
         String username = regis.getUsername();
         String password = regis.getPassword();
@@ -57,20 +70,16 @@ public class LoginController extends BaseController {
         regis.setUsername(username);
 
 
-        UserEntityJPA user = userService.findByUserName(username);
+        UserEntity user = userService.findByUserName(username);
 
         if (user == null) {
-            userService.save(regis);
+            userService.insert(regis);
             //b3: thong bao cho nguoi dung biet da luu thanh cong
-            model.addAttribute("thongbao", "Đăng ký thành công");
+            model.addAttribute("thong_bao", "Đăng ký thành công");
 
         } else {
             model.addAttribute("loi", "Tài khoản đã tồn tại");
         }
-        //TODO b2: luu thong tin vao csdl
-
-
-        //return "WEB-INF/views/user/home.jsp";
         return "SingUp"; // -> duong dan toi VIEW.
     }
 

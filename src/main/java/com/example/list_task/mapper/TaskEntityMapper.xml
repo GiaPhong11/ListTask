@@ -73,13 +73,7 @@
             title = #{keyword} and content = #{keyword} and status = #{keyword}
         </if>
     </select>
-    <select id="findById" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from task_entity
-        where
-        id = #{id,jdbcType=NUMERIC}
-    </select>
+
 
     <select id="findByTitleContaining" resultMap="BaseResultMap">
         SELECT * FROM tbl_tasks WHERE title LIKE '%' #{title} '%'
@@ -135,6 +129,8 @@
     <select id="countTasksFilterStatus" resultType="java.lang.Integer">
         SELECT count(1) FROM tbl_tasks WHERE status = #{status.code}
     </select>
-
+    <select id="findById2" resultMap="BaseResultMap">
+        SELECT * FROM tbl_tasks WHERE id = #{id}
+    </select>
 
 </mapper>

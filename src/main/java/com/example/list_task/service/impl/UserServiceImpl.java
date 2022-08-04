@@ -1,51 +1,38 @@
 package com.example.list_task.service.impl;
 
-import com.example.list_task.entity.UserEntityJPA;
-import com.example.list_task.repository.UserRepository;
+/*import com.example.list_task.entity.UserEntityJPA;*/
+import com.example.list_task.mapper.UserEntityMapper;
+import com.example.list_task.model.UserEntity;
+/*import com.example.list_task.repository.UserRepository;*/
 import com.example.list_task.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserEntityMapper userMapper;
 
-    @Override
-    public UserEntityJPA findByUserName(String username) throws Exception {
-        return userRepository.findByUserName(username);
+    public UserServiceImpl(UserEntityMapper userMapper) {
+        this.userMapper = userMapper;
     }
 
     @Override
-    public List<UserEntityJPA> findAll() {
-        return userRepository.findAll();
-    }
-
-
-    @Override
-    public Page<UserEntityJPA> findAll(Pageable pageable) {
-        return userRepository.findAll(pageable);
+    public UserEntity findByUserName(String username) throws Exception  {
+        return userMapper.findByUserName(username);
     }
 
     @Override
-    public <S extends UserEntityJPA> S save(S entity) {
-        return userRepository.save(entity);
+    public int insert(UserEntity row) {
+        return userMapper.insert(row);
     }
 
     @Override
-    public void deleteAll() {
-        userRepository.deleteAll();
-    }
-
-    @Override
-    public UserEntityJPA loadUserByUserName(String username) {
-        UserEntityJPA users = userRepository.findByUserName(username);
+    public UserEntity loadUserByUserName(String username) {
+        UserEntity users = userMapper.findByUserName(username);
         return users;
     }
+
+
 
 }

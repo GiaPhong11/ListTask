@@ -6,7 +6,6 @@
     <title>ListTask</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.1.1/css/all.min.css" integrity="sha512-ioRJH7yXnyX+7fXTQEKPULWkMn3CqMcapK0NNtCN8q//sW7ZeVFcbMJ9RvX99TwDg6P8rAH2IqUSt2TLab4Xmw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
           integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -21,14 +20,15 @@
         <div class="col mt-4">
             <div class="card">
                 <div class="card-header">
-                    Welcome <span th:text="${userLogined.username }"></span>
+                    Welcome <span  th:text="${loggedInUser.username }"></span>
+
                     <a th:href="@{/logout}" type="submit">Logout</a>
                     <h2 class="text-center"> List Task</h2>
                 </div>
                 <div class="taskbar">
                     <div class="float-left flex">
                         <div class="btn-ep">
-                            <button type="button" class="btn btn-secondary">Export CSV</button>
+                            <a th:href="@{/list/export}" class="btn btn-secondary">Export CSV</a>
                         </div>
                         <div class="btn-add">
                             <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
@@ -38,48 +38,42 @@
                     <div class="float-right flex">
                         <form th:action="@{/admin/pageTask}" method="get">
                             <div class="search">
-                                <input type="text" th:value="${#request.getParameter('keyword')}" name="keyword" placeholder="Từ khóa"/>
+                                <input type="text" th:value="${#request.getParameter('title')}" name="title" placeholder="Từ khóa"/>
                                 <!-- Keyword lấy theo parameter  -->
+                                <th:block th:if="${#request.getParameter('status') != null && !#request.getParameter('status').equals('')}">
+                                    <input type="hidden" name="status" th:value="${#request.getParameter('status')}">
+                                </th:block>
                                 <button type="submit" class="btn btn-info">Tìm kiếm</button>
                             </div>
                         </form>
 
                         <div class="drop dropdown show float-right">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            <a th:text="${(#request.getParameter('status') != null && !#request.getParameter('status').equals('')) ? #request.getParameter('status').replace('-', ' ') : 'All'}"  class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Open
                             </a>
 
-                            <div class="dropdown-menu " aria-labelledby="dropdownMenuLink">
-                                <form th:action="@{/admin/pageTask}" method="get">
-                                    <button class="dropdown-item" name="status" th:value="Open" type="submit">Open
-                                    </button>
-                                    <button class="dropdown-item" name="status" th:value="Inprogress" type="submit">
-                                        Inprogress
-                                    </button>
-                                    <button class="dropdown-item" name="status" th:value="Done" type="submit">Done</button>
-                                </form>
-                                <form th:action="@{/admin/listTask}" method="get">
-                                    <div class="search">
-                                        <button class="dropdown-item" type="submit">All</button>
-                                    </div>
-                                </form>
-
-                            </div>
+                               <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>-->
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" th:href="@{/admin/pageTask(title=${#request.getParameter('title')}, status='Open')}">Open</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/admin/pageTask(title=${#request.getParameter('title')}, status='Inprogress')}">Inprogress</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/admin/pageTask(title=${#request.getParameter('title')}, status='Done')}">Done</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/admin/pageTask(title=${#request.getParameter('title')}, status='')}">All</a></li>
+                                </ul>
 
                         </div>
 
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row" th:if="${!taskPage.hasContent()}">
+                    <div class="row" th:if="${!tasks.hasContent()}">
                         <div class="col">
                             <div class="alert alert-primary" role="alert">
                                 <strong>No Task Found</strong>
                             </div>
                         </div>
                     </div>
-                    <table class="table table-striped table-inverse" th:if="${taskPage.hasContent()}">
+                    <table class="table table-striped table-inverse" th:if="${tasks.hasContent()}">
                         <thead class="thead-inverse">
                         <tr>
                             <th width="5%">ID</th>
@@ -90,12 +84,12 @@
                         </thead>
                         <tbody>
 
-                        <tr th:each=" list : ${taskPage.content} ">
+                        <tr th:each=" list : ${tasks} ">
                             <td scope="row" th:text="${list.id}"></td>
                             <td scope="row" th:text="${list.title}"></td>
                             <td th:text="${list.status}"></td>
                             <td>
-                                <a class="btn btn-outline-info" href=""><!--<i class="fa-solid fa-circle-info"></i>-->
+                                <a class="detailTask btn btn-outline-info" href="#detailEmployeeModal" data-toggle="modal"><!--<i class="fa-solid fa-circle-info"></i>-->
                                     Chi tiết</a>
                                 <a href="#editEmployeeModal" class="editTask btn btn-outline-warning"
                                    data-toggle="modal">Chỉnh sửa</a>
@@ -111,27 +105,14 @@
                 </div>
 
                 <div class="card-footer text-muted">
-                    <nav aria-label="Page navigation"
-                         th:if="${taskPage.totalPages>0}" class="float-right">
-                        <ul class="pagination justify-content-center">
-                            <li th:class="${1 == taskPage.number + 1} ? 'page-item' : 'page-item'">
-                                <a th:href="@{/admin/pageTask(size=${taskPage.size},page=${0},keyword=${#request.getParameter('keyword')},status=${#request.getParameter('status')})}"
-                                   class="page-link">First</a>
-                            </li>
-                            <li class="page-item active"
-                                th:each="pageNumber : ${pageNumbers}"
-                                th:if="${taskPage.totalPages > 1}"
-                                th:class="${pageNumber == taskPage.number + 1} ? 'page-item' : 'page-item'">
-                                <a th:href="@{/admin/pageTask(size=${taskPage.size},page=${pageNumber-1},keyword=${#request.getParameter('keyword')},status=${#request.getParameter('status')})}"
-                                   class="page-link" th:text="${pageNumber}">
-                                </a>
-                            </li>
-                            <li th:class="${taskPage.totalPages == taskPage.number + 1} ? 'page-item' : 'page-item'">
-                                <a th:href="@{/admin/pageTask(size=${taskPage.size},page=${taskPage.totalPages-1},keyword=${#request.getParameter('keyword')},status=${#request.getParameter('status')})}"
-                                   class="page-link">Last
-                                </a>
-                            </li>
-                        </ul>
+                    <nav aria-label="Page navigation" class="float-right">
+                    <a class="btn" th:classappend="${tasks.number <= 0 ? 'disabled' : ''}" th:href="@{/admin/pageTask(page=${tasks.number}, title=${#request.getParameter('title')}, status=${#request.getParameter('status')})}"><<</a>
+                    <a class="btn" th:if="${tasks.number == tasks.totalPages - 1 && tasks.totalPages >= 3}" th:href="@{/admin/pageTask(page=${tasks.number - 1}, title=${#request.getParameter('title')}, status=${#request.getParameter('status')})}" th:text="${tasks.number - 1}"></a>
+                    <a class="btn" th:if="${tasks.number - 1 >= 0}"  th:href="@{/admin/pageTask(page=${tasks.number}, title=${#request.getParameter('title')}, status=${#request.getParameter('status')})}" th:text="${tasks.number}" ></a>
+                    <a class="btn disabled" th:if="${tasks.number <= tasks.totalPages}" th:href="@{/admin/pageTask(page=${tasks.number + 1}, title=${#request.getParameter('title')}, status=${#request.getParameter('status')})}" th:text="${tasks.number + 1}"></a>
+                    <a class="btn" th:if="${(tasks.number + 2 <= tasks.totalPages)}" th:href="@{/admin/pageTask(page=${tasks.number + 2}, title=${#request.getParameter('title')}, status=${#request.getParameter('status')})}" th:text="${tasks.number + 2}"></a>
+                    <a class="btn" th:if="${(tasks.number == 0) && (tasks.totalPages >= 3)}" th:href="@{/admin/pageTask(page=${tasks.number + 3}, title=${#request.getParameter('title')}, status=${#request.getParameter('status')})}" th:text="${tasks.number + 3}"></a>
+                    <a class="btn" th:classappend="${tasks.number < tasks.totalPages - 1 ? '' : 'disabled'}" th:href="@{/admin/pageTask(page=${tasks.number + 2}, title=${#request.getParameter('title')}, status=${#request.getParameter('status')})}">>></a>
                     </nav>
                 </div>
             </div>
@@ -165,6 +146,7 @@
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy bỏ">
                     <input type="submit" class="btn btn-success" value="Thêm">
+                    <input type="hidden" name="userId" th:value="${loggedInUser.id}">
                 </div>
             </form>
         </div>
@@ -208,6 +190,42 @@
         </div>
     </div>
 </div>
+<!-- Detail Modal HTML -->
+<div id="detailEmployeeModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <a class="modal-title" style="color: #007bff;">Chi tiết Task</a>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                   <!-- <div class="form-group">
+                        <label>Tiêu đề</label>
+                        <input type="text" id="title" class="form-control titleUpdate" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nội dung</label>
+                        <input type="text" class="form-control contentUpdate" id="content"  name="content" required>
+                    </div>-->
+                    <div class="form-group green-border-focus">
+                        Tiêu đề:
+                        <input id="title" class="detail_ip">
+                        <p style="margin-bottom: 3px"><u><i>Thông tin chi tiết</i></u></p>
+                        <div class="form-group green-border-focus">
+                            <textarea class="form-control detail_ta"  id="content" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy bỏ">
+                    <!--<input type="submit" class="btn btn-info" value="Lưu">-->
+                    <input type="hidden" id="id" name="id" readonly>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Delete Modal HTML -->
 <div id="deleteEmployeeModal" class="modal fade">
@@ -222,8 +240,8 @@
                     <p>Bạn có chắc muốn xóa <span class="titleDelete"></span></p>
                 </div>
                 <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                    <input type="submit" class="btn btn-danger" value="Delete">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy bỏ">
+                    <input type="submit" class="btn btn-danger" value="Xóa">
                     <input type="hidden" name="id" id="id" readonly>
                 </div>
             </form>
@@ -260,18 +278,30 @@
         });
 
         $('table .editTask').on('click', function () {
-            debugger
+
             var id = $(this).parent().find('#id').val();
-            console.log("Id: " + id);
-            $.ajax({
+            jQuery.ajax({
                 type: 'GET',
-                url: '../api/task/' + id,
+                url: '../api/task2/' + id,
                 success: function (task) {
                     console.log("Task: " + task.title);
                     $('#editEmployeeModal #id').val(id);
                     $('#editEmployeeModal #title').val(task.title);
                     $('#editEmployeeModal #content').val(task.content);
                     $('#editEmployeeModal #status').val(task.status);
+                }
+            });
+        });
+        $('table .detailTask').on('click', function () {
+            var id = $(this).parent().find('#id').val();
+            jQuery.ajax({
+                type: 'GET',
+                url: '../api/task2/' + id,
+                success: function (task) {
+                    console.log("Task: " + task.title);
+                    $('#detailEmployeeModal #id').val(id);
+                    $('#detailEmployeeModal #title').val(task.title);
+                    $('#detailEmployeeModal #content').val(task.content);
                 }
             });
         });

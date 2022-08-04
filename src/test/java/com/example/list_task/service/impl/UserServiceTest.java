@@ -1,13 +1,15 @@
 package com.example.list_task.service.impl;
 
-import com.example.list_task.repository.UserRepository;
+/*import com.example.list_task.repository.UserRepository;*/
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 class UserServiceTest {
+/*
     @MockBean
     private UserRepository userRepository;
+*/
 
     @InjectMocks
     private UserServiceImpl userService;

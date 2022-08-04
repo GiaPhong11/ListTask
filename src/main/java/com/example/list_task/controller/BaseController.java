@@ -1,28 +1,28 @@
 package com.example.list_task.controller;
 
-import com.example.list_task.entity.UserEntityJPA;
+import com.example.list_task.model.UserEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 public abstract class BaseController {
     // Kiểm tra đã login hay chưa
-        @ModelAttribute("isLogined")
+    @ModelAttribute("isLoggedIn")
     public boolean isLogined() {
-        boolean isLogined = false;
+        boolean isLoggedIn = false;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
-            isLogined = true;
+            isLoggedIn = true;
         }
-        return isLogined;
+        return isLoggedIn;
     }
 
     // Trả về thông tin của đối tượng User
-    @ModelAttribute("userLogined")
-    public UserEntityJPA getUserLogined() {
-        Object userLogined = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userLogined != null && userLogined instanceof UserDetails)
-            return (UserEntityJPA) userLogined;
+    @ModelAttribute("loggedInUser")
+    public UserEntity getloggedInUser() {
+        Object loggedInUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (loggedInUser != null && loggedInUser instanceof UserDetails)
+            return (UserEntity) loggedInUser;
 
         return null;
     }

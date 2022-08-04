@@ -4,10 +4,11 @@ function Validator(options) {
 
     options.rules.forEach(function (rule) {
         var inputElement = formElement.querySelector(rule.params) /// Lấy ra the input
+        console.log(inputElement)
         if (inputElement) {// blur kiem tra xem nguoi dung vua bo con tro chuot ra ngoai
             inputElement.onblur = function () {
                 var errMSG = rule.test(inputElement.value);
-                var errEle = inputElement.parentElement.parentElement.querySelector('msg')
+                var errEle = inputElement.parentElement.querySelector('msg')
                 if (errMSG) {
                     errEle.innerText = errMSG
                     inputElement.classList.add('invalid')

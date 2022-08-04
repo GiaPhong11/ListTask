@@ -194,7 +194,6 @@ h2 {
 
 body {
     font-size: 13px;
-    line-height: 1.8;
     color: #222;
     background: #f8f8f8;
     font-weight: 400;
@@ -597,5 +596,50 @@ label.valid:after {
 .socials2 li a i{
     margin-right: 20px;
     font-size: 25px;
+}
+
+/*validate*/
+form{
+    display: flex;
+    margin-top: 10%;
+    font-size: 35px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.inform{
+    display: flex;
+    border: 5px solid #e3e3e3;
+    border-radius: 10px;
+    background-color: #E9ECEF;
+    overflow: hidden;
+}
+input:hover{
+    border: 2px solid #4795fc;
+    transition-duration: 0.5s;
+    color: #4795fc;
+}
+
+.inform img{
+    width: 40px;
+    height: 40px;
+    background-color:  rgb(233, 236, 239);
+}
+
+.form-Son{
+    text-align: center;
+}
+msg{
+    color: red;
+    font-size: 14px;
+    transition-duration: 0.5s;
+    font-style: italic;
+}
+
+.invalid{
+    transition-duration: 0.5s;
+}
+.valid{
+    transition-duration: 0.5s;
 }
 /*# sourceMappingURL=style.css.map */
